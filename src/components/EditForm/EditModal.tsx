@@ -65,16 +65,7 @@ const EditModal: React.FC<EditModalProps> = ({ user, address, onClose, onSave })
                 <Field type="email" id="email" name="email" className="form-control" />
                 <ErrorMessage name="email" component="div" className="error" />
               </div>
-              <div className="form-group">
-                <label htmlFor="password">Password</label>
-                <Field type="password" id="password" name="password" className="form-control" />
-                <ErrorMessage name="password" component="div" className="error" />
-              </div>
-              <div className="form-group">
-                <label htmlFor="confirmPassword">Confirm Password</label>
-                <Field type="password" id="confirmPassword" name="confirmPassword" className="form-control" />
-                <ErrorMessage name="confirmPassword" component="div" className="error" />
-              </div>
+           
               <div className="form-group">
                 <label htmlFor="city">City</label>
                 <Field type="text" id="city" name="addresses[0].city" className="form-control" />

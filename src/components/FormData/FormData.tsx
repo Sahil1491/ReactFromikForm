@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './FormData.css';
 import EditModal from '../EditForm/EditModal';
+import SignUpModal from '../SignUpForm/SignUpModal';
 
 const FormData: React.FC = () => {
-  const navigate = useNavigate();
   const [formData, setFormData] = useState<any[]>([]);
-  const [showModal, setShowModal] = useState<boolean>(false);
+  const [showEditModal, setShowEditModal] = useState<boolean>(false);
+  const [showSignUpModal, setShowSignUpModal] = useState<boolean>(false);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [selectedUserIndex, setSelectedUserIndex] = useState<number | null>(null);
 
@@ -20,7 +20,7 @@ const FormData: React.FC = () => {
   const handleEdit = (userIndex: number, addressIndex: number) => {
     setSelectedIndex(addressIndex);
     setSelectedUserIndex(userIndex);
-    setShowModal(true);
+    setShowEditModal(true);
   };
 
   const handleDelete = (userIndex: number, addressIndex: number) => {
@@ -37,8 +37,8 @@ const FormData: React.FC = () => {
     localStorage.setItem('formData', JSON.stringify(updatedUsers));
   };
 
-  const handleCloseModal = () => {
-    setShowModal(false);
+  const handleCloseEditModal = () => {
+    setShowEditModal(false);
     setSelectedIndex(null);
     setSelectedUserIndex(null);
   };
@@ -63,8 +63,18 @@ const FormData: React.FC = () => {
       });
       setFormData(updatedUsers);
       localStorage.setItem('formData', JSON.stringify(updatedUsers));
-      handleCloseModal();
+      handleCloseEditModal();
     }
+  };
+
+  const handleSignUpSave = (newUserData: any) => {
+    setFormData([...formData, newUserData]);
+    localStorage.setItem('formData', JSON.stringify([...formData, newUserData]));
+    handleSignUpClose();
+  };
+
+  const handleSignUpClose = () => {
+    setShowSignUpModal(false);
   };
 
   return (
@@ -113,15 +123,34 @@ const FormData: React.FC = () => {
       </div>
       <div className="row">
         <div className="col-12 text-center">
-          <button onClick={() => navigate('/')} className="btn btn-secondary">Back to Form</button>
+          <button onClick={() => setShowSignUpModal(true)} className="btn btn-secondary">Add User</button>
         </div>
       </div>
-      {showModal && selectedIndex !== null && selectedUserIndex !== null && (
+      {showEditModal && selectedIndex !== null && selectedUserIndex !== null && (
         <EditModal
           user={formData[selectedUserIndex]}
           address={formData[selectedUserIndex].addresses[selectedIndex]}
-          onClose={handleCloseModal}
+          onClose={handleCloseEditModal}
           onSave={handleSave}
+        />
+      )}
+      {showSignUpModal && (
+        <SignUpModal
+          initialValues={{
+            name: '',
+            email: '',
+            password: '',
+            confirmPassword: '',
+            addresses: [
+              {
+                city: '',
+                state: '',
+                phoneNumber: '',
+              },
+            ],
+          }}
+          onSave={handleSignUpSave}
+          onClose={handleSignUpClose}
         />
       )}
     </div>
