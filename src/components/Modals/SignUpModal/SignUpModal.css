@@ -1,0 +1,121 @@
+.modal-header-custom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #007bff; /* Set header background color */
+  padding: 15px;
+  border-bottom: 1px solid #ddd;
+}
+
+.cross-button {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #fff; /* Adjust text color to ensure readability */
+  position: absolute;
+  top: 10px;
+  right: 15px;
+}
+
+.my-form {
+  padding: 20px;
+}
+
+.my-form label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.my-form input {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+  font-size: 1rem;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.password-field {
+  position: relative;
+}
+
+.password-wrapper {
+  position: relative;
+}
+
+.password-input {
+  padding-right: 2.5rem; 
+}
+
+.eye-icon {
+  position: absolute;
+  right: 0.5rem;
+  top: 50%; 
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.error {
+  color: red;
+  font-size: 0.85rem;
+  margin-top: 5px;
+}
+
+.add-button,
+.remove-button {
+  margin-top: 10px;
+  padding: 6px 12px;
+  font-size: 1rem;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.add-button:hover,
+.remove-button:hover {
+  background-color: #0056b3;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 15px;
+  border-top: 1px solid #ddd;
+}
+
+.modal-body {
+  padding: 20px;
+}
+
+.address-buttons-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+@media (max-width: 576px) {
+  .modal-header-custom {
+    padding: 10px;
+  }
+
+  .modal-footer {
+    padding: 10px;
+  }
+
+  .my-form {
+    padding: 10px;
+  }
+
+  .add-button,
+  .remove-button {
+    font-size: 0.875rem;
+    padding: 5px 10px;
+  }
+}
