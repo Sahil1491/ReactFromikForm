@@ -2,7 +2,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #007bff; /* Set header background color */
+  background-color: #007bff; 
   padding: 15px;
   border-bottom: 1px solid #ddd;
 }
@@ -12,7 +12,7 @@
   border: none;
   font-size: 1.5rem;
   cursor: pointer;
-  color: #fff; /* Adjust text color to ensure readability */
+  color: #fff;
   position: absolute;
   top: 10px;
   right: 15px;
@@ -25,7 +25,7 @@
 .my-form label {
   display: block;
   margin-bottom: 5px;
-  font-weight: bold;
+  font-weight: 400;
 }
 
 .my-form input {
@@ -99,6 +99,26 @@
   display: flex;
   justify-content: space-between;
 }
+
+/* Styles for the agree to terms checkbox and label */
+.agree-to-terms-wrapper {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  position: relative;
+}
+
+.agree-to-terms-wrapper input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+.agree-to-terms-wrapper label {
+  margin: 0;
+  font-weight: 400;
+  cursor: pointer;
+}
+
+
 
 @media (max-width: 576px) {
   .modal-header-custom {

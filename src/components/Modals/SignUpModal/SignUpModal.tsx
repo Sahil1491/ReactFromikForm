@@ -18,6 +18,7 @@ interface MyFormValues {
   password: string;
   confirmPassword: string;
   addresses: Address[];
+  agreeToTerms: boolean; // New field for the checkbox
 }
 
 interface SignUpFormProps {
@@ -34,6 +35,7 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ initialValues, onClose, onSave 
   const toggleConfirmPasswordVisibility = () => setShowConfirmPassword(!showConfirmPassword);
 
   const onSubmit = (values: MyFormValues, { resetForm }: { resetForm: () => void }) => {
+    console.log("Form values on submit:", values);
     onSave(values);
 
     setTimeout(() => {
@@ -53,8 +55,10 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ initialValues, onClose, onSave 
           initialValues={initialValues}
           validationSchema={MyFormValidationSchema}
           onSubmit={onSubmit}
+          validateOnChange={true}
+          validateOnBlur={true}
         >
-          {({ values }) => (
+          {() => (
             <Form id="signup-form" className="my-form">
               <div className="form-group">
                 <Field
@@ -69,7 +73,6 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ initialValues, onClose, onSave 
                 <Field
                   name="email"
                   type="email"
-                  label="Email"
                   invalidcharacter={[" "]}
                   validcharacter={[
                     "-",
@@ -83,6 +86,7 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ initialValues, onClose, onSave 
                     "@",
                     ".",
                   ]}
+                  label="Email"
                   as={FormikFieldInput}
                 />
               </div>
@@ -95,7 +99,7 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ initialValues, onClose, onSave 
                     invalidcharacter={[" "]}
                     validcharacter={[
                       "~",
-                      "`",
+                      "",
                       "!",
                       "@",
                       "#",
@@ -146,11 +150,10 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ initialValues, onClose, onSave 
                   <Field
                     name="confirmPassword"
                     type={showConfirmPassword ? "text" : "password"}
-                    label="Confirm Password"
                     invalidcharacter={[" "]}
                     validcharacter={[
                       "~",
-                      "`",
+                      "",
                       "!",
                       "@",
                       "#",
@@ -182,6 +185,7 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ initialValues, onClose, onSave 
                       "?",
                       "/",
                     ]}
+                    label="Confirm Password"
                     as={FormikFieldInput}
                     className="password-input"
                   />
@@ -196,63 +200,81 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ initialValues, onClose, onSave 
               </div>
 
               <FieldArray name="addresses">
-                {({ push, remove }) => (
+                {() => (
                   <div>
-                    {values.addresses.map((_, index) => (
-                      <div key={index} className="address-group">
-                        <h5>
-                      {index === 0 ? 'Current Address' : index === 1 ? 'Permanent Address' : `Address ${index + 1}`}
-                    </h5>
-                        <div className="form-group">
-                          <Field
-                            name={`addresses.${index}.city`}
-                            type="text"
-                            label="City"
-                            as={FormikFieldInput}
-                          />
-                        </div>
-
-                        <div className="form-group">
-                          <Field
-                            name={`addresses.${index}.state`}
-                            type="text"
-                            label="State"
-                            as={FormikFieldInput}
-                          />
-                        </div>
-
-                        <div className="form-group">
-                          <Field
-                            name={`addresses.${index}.phoneNumber`}
-                            type="text"
-                            label="Phone Number"
-                            as={FormikFieldInput}
-                          />
-                        </div>
-
-                        <div className="address-buttons-wrapper">
-                          <button
-                            type="button"
-                            className="remove-button"
-                            onClick={() => remove(index)}
-                          >
-                            Remove Address
-                          </button>
-                        </div>
+                    <div className="address-group">
+                      <h5>Current Address</h5>
+                      <div className="form-group">
+                        <Field
+                          name="addresses[0].city"
+                          type="text"
+                          label="City"
+                          as={FormikFieldInput}
+                        />
                       </div>
-                    ))}
-                    <div className="form-group">
-                      <button
-                        type="button"
-                        className="add-button"
-                        onClick={() => push({ city: '', state: '', phoneNumber: '' })}
-                      >
-                        Add Address
-                      </button>
+
+                      <div className="form-group">
+                        <Field
+                          name="addresses[0].state"
+                          type="text"
+                          label="State"
+                          as={FormikFieldInput}
+                        />
+                      </div>
+
+                      <div className="form-group">
+                        <Field
+                          name="addresses[0].phoneNumber"
+                          type="text"
+                          label="Phone Number"
+                          as={FormikFieldInput}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="address-group">
+                      <h5>Permanent Address</h5>
+                      <div className="form-group">
+                        <Field
+                          name="addresses[1].city"
+                          type="text"
+                          label="City"
+                          as={FormikFieldInput}
+                        />
+                      </div>
+
+                      <div className="form-group">
+                        <Field
+                          name="addresses[1].state"
+                          type="text"
+                          label="State"
+                          as={FormikFieldInput}
+                        />
+                      </div>
+
+                      <div className="form-group">
+                        <Field
+                          name="addresses[1].phoneNumber"
+                          type="text"
+                          label="Phone Number"
+                          as={FormikFieldInput}
+                        />
+                      </div>
                     </div>
                   </div>
                 )}
               </FieldArray>
+
+              <div className="form-group agree-to-terms-wrapper">
+                <Field
+                  name="agreeToTerms"
+                  type="checkbox"
+                  id="agreeToTerms"
+                  as={FormikFieldInput}
+                />
+                <span>I agree terms and condition</span>
+              </div>
+
               <div className="modal-footer">
                 <Button variant="secondary" onClick={onClose}>Cancel</Button>
                 <Button type="submit" variant="primary">Save</Button>

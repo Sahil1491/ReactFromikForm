@@ -63,9 +63,8 @@ const FormData: React.FC = () => {
               <tr>
                 <th>Name</th>
                 <th>Email</th>
-                <th>City</th>
-                <th>State</th>
-                <th>Phone Number</th>
+                <th>Current Address</th>
+                <th>Permanent Address</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -74,9 +73,16 @@ const FormData: React.FC = () => {
                 <tr key={userIndex}>
                   <td>{user.name}</td>
                   <td>{user.email}</td>
-                  <td>{user.addresses[0]?.city}</td>
-                  <td>{user.addresses[0]?.state}</td>
-                  <td>{user.addresses[0]?.phoneNumber}</td>
+                  <td className="address-cell">
+                    <div><strong>City:</strong> {user.addresses[0]?.city}</div>
+                    <div><strong>State:</strong> {user.addresses[0]?.state}</div>
+                    <div><strong>Phone Number:</strong> {user.addresses[0]?.phoneNumber}</div>
+                  </td>
+                  <td className="address-cell">
+                    <div><strong>City:</strong> {user.addresses[1]?.city}</div>
+                    <div><strong>State:</strong> {user.addresses[1]?.state}</div>
+                    <div><strong>Phone Number:</strong> {user.addresses[1]?.phoneNumber}</div>
+                  </td>
                   <td>
                     <FaEdit
                       onClick={() => handleEdit(userIndex)}
@@ -101,7 +107,7 @@ const FormData: React.FC = () => {
         </div>
       </div>
       {showEditModal && selectedUserIndex !== null && (
-          <EditModal
+        <EditModal
           user={formData[selectedUserIndex]}  
           onClose={handleCloseEditModal}
           onSave={handleSave}
@@ -114,12 +120,10 @@ const FormData: React.FC = () => {
             email: '',
             password: '',
             confirmPassword: '',
+            agreeToTerms:false,
             addresses: [
-              {
-                city: '',
-                state: '',
-                phoneNumber: '',
-              },
+              { city: '', state: '', phoneNumber: '' },  
+              { city: '', state: '', phoneNumber: '' }, 
             ],
           }}
           onSave={handleSignUpSave}
