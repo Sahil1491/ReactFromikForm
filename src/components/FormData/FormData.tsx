@@ -2,14 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './FormData.css';
-import EditModal from '../Modals/EditModal/EditModal';
-import SignUpModal from '../Modals/SignUpModal/SignUpModal';
+import UserFormModal from '../Modals/UserFormModal'; // Ensure the import path is correct
 
 const FormData: React.FC = () => {
   const [formData, setFormData] = useState<any[]>([]);
-  const [showEditModal, setShowEditModal] = useState<boolean>(false);
-  const [showSignUpModal, setShowSignUpModal] = useState<boolean>(false);
+  const [showUserModal, setShowUserModal] = useState<boolean>(false);
   const [selectedUserIndex, setSelectedUserIndex] = useState<number | null>(null);
+  const [modalMode, setModalMode] = useState<'add' | 'edit'>('add'); // Track modal mode
 
   useEffect(() => {
     const storedData = JSON.parse(localStorage.getItem('formData') || '[]');
@@ -18,7 +17,8 @@ const FormData: React.FC = () => {
 
   const handleEdit = (userIndex: number) => {
     setSelectedUserIndex(userIndex);
-    setShowEditModal(true);
+    setModalMode('edit');
+    setShowUserModal(true);
   };
 
   const handleDelete = (userIndex: number) => {
@@ -27,30 +27,23 @@ const FormData: React.FC = () => {
     localStorage.setItem('formData', JSON.stringify(updatedUsers));
   };
 
-  const handleCloseEditModal = () => {
-    setShowEditModal(false);
+  const handleCloseUserModal = () => {
+    setShowUserModal(false);
     setSelectedUserIndex(null);
   };
 
   const handleSave = (updatedData: any) => {
-    if (selectedUserIndex !== null) {
+    if (modalMode === 'edit' && selectedUserIndex !== null) {
       const updatedUsers = formData.map((user: any, index: number) =>
-        index === selectedUserIndex ? { ...updatedData } : user
+        index === selectedUserIndex ? { ...user, ...updatedData } : user
       );
       setFormData(updatedUsers);
       localStorage.setItem('formData', JSON.stringify(updatedUsers));
-      handleCloseEditModal();
+    } else if (modalMode === 'add') {
+      setFormData([...formData, updatedData]);
+      localStorage.setItem('formData', JSON.stringify([...formData, updatedData]));
     }
-  };
-
-  const handleSignUpSave = (newUserData: any) => {
-    setFormData([...formData, newUserData]);
-    localStorage.setItem('formData', JSON.stringify([...formData, newUserData]));
-    handleSignUpClose();
-  };
-
-  const handleSignUpClose = () => {
-    setShowSignUpModal(false);
+    handleCloseUserModal();
   };
 
   return (
@@ -103,31 +96,19 @@ const FormData: React.FC = () => {
       </div>
       <div className="row">
         <div className="col-12 text-center">
-          <button onClick={() => setShowSignUpModal(true)} className="btn btn-secondary">Add User</button>
+          <button onClick={() => {
+            setModalMode('add');
+            setShowUserModal(true);
+          }} className="btn btn-secondary">Add User</button>
         </div>
       </div>
-      {showEditModal && selectedUserIndex !== null && (
-        <EditModal
-          user={formData[selectedUserIndex]}  
-          onClose={handleCloseEditModal}
+      {showUserModal && (
+        <UserFormModal
+          user={modalMode === 'edit' && selectedUserIndex !== null ? formData[selectedUserIndex] : undefined}
+          onClose={handleCloseUserModal}
           onSave={handleSave}
-        />
-      )}
-      {showSignUpModal && (
-        <SignUpModal
-          initialValues={{
-            name: '',
-            email: '',
-            password: '',
-            confirmPassword: '',
-            agreeToTerms:false,
-            addresses: [
-              { city: '', state: '', phoneNumber: '' },  
-              { city: '', state: '', phoneNumber: '' }, 
-            ],
-          }}
-          onSave={handleSignUpSave}
-          onClose={handleSignUpClose}
+          modalTitle={modalMode === 'edit' ? 'Edit User' : 'Add User'}
+          showPasswordFields={modalMode === 'add'}
         />
       )}
     </div>
