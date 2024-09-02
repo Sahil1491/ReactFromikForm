@@ -1,4 +1,4 @@
-// Models/IUsers.ts
+// Interface for data call from api
 export interface IAddress {
   address: string;
   city: string;

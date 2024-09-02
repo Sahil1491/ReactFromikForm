@@ -1,3 +1,6 @@
+// This component is used to set limit of data shown in one page 
+
+
 import React from "react";
 import { Pagination as BootstrapPagination } from "react-bootstrap";
 

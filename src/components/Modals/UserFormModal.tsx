@@ -1,3 +1,9 @@
+/*
+
+This component is our form modal of signup and edit modal 
+*/
+
+
 import React, { useState, useEffect } from 'react';
 import { Formik, Form, Field, FieldArray, useFormikContext } from 'formik';
 import { Button, Modal } from 'react-bootstrap';
@@ -75,14 +81,16 @@ const UserFormModal: React.FC<UserFormModalProps> = ({ user, onClose, onSave, mo
         setFieldValue("addresses[1].state", values.addresses[0].state);
         setFieldValue("addresses[1].phoneNumber", values.addresses[0].phoneNumber);
       }
-    }, [values.isSameAddress, values.addresses[0].city]);
+    }, [values.isSameAddress, values.addresses]);
 
     return null;
   };
 
   const onSubmit = (values: MyFormValues, { resetForm }: { resetForm: () => void }) => {
+    
     console.log("Form values on submit:", values);
     onSave(values);
+    
 
     setTimeout(() => {
       resetForm();
@@ -107,8 +115,9 @@ const UserFormModal: React.FC<UserFormModalProps> = ({ user, onClose, onSave, mo
           validationSchema={MyFormValidationSchema}
           onSubmit={onSubmit}
         >
-          {({ values }) => (
+          {({ values,setFieldValue }) => (
             <Form id="user-form" className="my-form">
+            {/* use formobserver inside the form field*/}
               <FormObserver />
 
               <div className="form-group">

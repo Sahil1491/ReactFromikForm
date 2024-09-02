@@ -1,14 +1,20 @@
+/*
+      This component is use for displaying our grid this is our home page.
+
+*/
+
+
 import React, { useState, useEffect } from 'react';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './FormData.css';
-import UserFormModal from '../Modals/UserFormModal'; // Ensure the import path is correct
+import UserFormModal from '../Modals/UserFormModal'; 
 
 const FormData: React.FC = () => {
   const [formData, setFormData] = useState<any[]>([]);
   const [showUserModal, setShowUserModal] = useState<boolean>(false);
   const [selectedUserIndex, setSelectedUserIndex] = useState<number | null>(null);
-  const [modalMode, setModalMode] = useState<'add' | 'edit'>('add'); // Track modal mode
+  const [modalMode, setModalMode] = useState<'add' | 'edit'>('add'); 
 
   useEffect(() => {
     const storedData = JSON.parse(localStorage.getItem('formData') || '[]');

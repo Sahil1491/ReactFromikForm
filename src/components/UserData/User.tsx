@@ -3,6 +3,7 @@ import { Table, Spinner, Alert, Container } from "react-bootstrap";
 import { IUser } from "../../Models/IUsers";
 import { UserService } from "../../Services/UserService";
 import Pagination from "../Pagination/Pagination";
+import { useNavigate } from "react-router-dom";
 
 interface IState {
     loading: boolean;
@@ -22,6 +23,7 @@ const Users: React.FC = () => {
     });
 
     const itemsPerPage = 10;
+    const navigate = useNavigate();
 
     useEffect(() => {
         fetchUsers(state.currentPage);
@@ -53,6 +55,10 @@ const Users: React.FC = () => {
         setState({ ...state, currentPage: page });
     };
 
+    const handleUserClick = (id: number) => {
+        navigate(`/users/${id}`);
+    };
+
     const { loading, users, errorMsg, currentPage, totalItems } = state;
 
     return (
@@ -62,7 +68,7 @@ const Users: React.FC = () => {
             {loading ? (
                 <div className="text-center">
                     <Spinner animation="border" role="status">
-                        <span className="sr-only">Loading...</span>
+                      
                     </Spinner>
                 </div>
             ) : (
@@ -85,7 +91,7 @@ const Users: React.FC = () => {
                         <tbody>
                             {users.length > 0 ? (
                                 users.map(user => (
-                                    <tr key={user.id}>
+                                    <tr key={user.id} onClick={() => handleUserClick(user.id)}>
                                         <td>{user.id}</td>
                                         <td>{user.firstName}</td>
                                         <td>{user.lastName}</td>
